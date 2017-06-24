@@ -1,0 +1,4 @@
+# cargo-maven-plugin-email-server-issue
+Small project reproducer exhibiting the problem
+
+To reproduce, run "mvn install" in empty-war dir and then in acceptance-test dir.
