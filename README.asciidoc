@@ -1,4 +1,13 @@
 # cargo-maven-plugin-email-server-issue
 Small project reproducer exhibiting the problem
 
+The problem is at WAR deploy, something is connecting to the email server, encounters a problem, and then causes a shutdown.  The error says "Port number N ... is in use", but nothing is running on that port.
+
+The error occurs no matter what the port number is.
+
+However, when removing the two email properties used with Spring Boot, the problem goes away:
+  spring.mail.host=localhost
+  spring.mail.port=15025
+(of course, that makes the app use the production-configured values so not a solution!)
+
 To reproduce, run "mvn install" in empty-war dir and then in acceptance-test dir.
