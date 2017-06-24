@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>research.cargo.maven.plugin.email.issue</groupId>
+  <artifactId>empty-war</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>Email Issue WAR</name>
+  <description>The WAR to deploy with Cargo exhibiting Cargo error with email server running.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- DEPENDENCY VERSIONS -->
+    <spring-boot-dependencies.version>1.5.3.RELEASE</spring-boot-dependencies.version>
+
+    <!-- PLUGIN CONFIGURATION -->
+    <java.version>1.8</java.version>
+
+    <!-- PLUGIN VERSIONS -->
+    <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+    <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <compilerVersion>${java.version}</compilerVersion>
+          <fork>true</fork>
+          <optimize>true</optimize>
+          <verbose>true</verbose>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${maven-war-plugin.version}</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

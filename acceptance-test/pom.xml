@@ -1,0 +1,139 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>research.cargo.maven.plugin.email.issue</groupId>
+  <artifactId>acceptance-test</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Email Issue AT</name>
+  <description>Reproduce small project exhibiting Cargo error with email server running.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- DEPENDENCY VERSIONS -->
+    <tomcat.version>8.5.14</tomcat.version>
+
+    <!-- PLUGIN CONFIGURATION -->
+    <java.version>1.8</java.version>
+    <email.daemon>true</email.daemon>
+
+    <!-- PLUGIN VERSIONS -->
+    <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+    <cargo-maven2-plugin.version>1.6.3</cargo-maven2-plugin.version>
+    <emailserver-maven-plugin.version>1.1.1</emailserver-maven-plugin.version>
+  </properties>
+
+    <dependencies>
+      <dependency>
+        <groupId>research.cargo.maven.plugin.email.issue</groupId>
+        <artifactId>empty-war</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <type>war</type>
+      </dependency>
+    </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <compilerVersion>${java.version}</compilerVersion>
+            <fork>true</fork>
+            <optimize>true</optimize>
+            <verbose>true</verbose>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>${cargo-maven2-plugin.version}</version>
+          <configuration>
+            <configuration>
+              <propertiesFile>${basedir}/src/test/resources/acceptanceTest.properties</propertiesFile>
+            </configuration>
+            <deployables>
+              <deployable>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>empty-war</artifactId>
+                <type>war</type>
+              </deployable>
+            </deployables>
+            <container>
+              <systemPropertiesFile>${basedir}/src/test/resources/acceptanceTest.properties</systemPropertiesFile>
+              <containerId>tomcat8x</containerId>
+              <artifactInstaller>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat</artifactId>
+                <version>${tomcat.version}</version>
+                <type>zip</type>
+              </artifactInstaller>
+            </container>
+          </configuration>
+          <executions>
+            <execution>
+              <id>start-cargo</id>
+              <phase>pre-integration-test</phase>
+              <goals>
+                <goal>start</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>stop-cargo</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>stop</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.btmatthews.maven.plugins</groupId>
+          <artifactId>emailserver-maven-plugin</artifactId>
+          <version>${emailserver-maven-plugin.version}</version>
+          <configuration>
+            <daemon>${email.daemon}</daemon>
+            <monitorKey>email</monitorKey>
+            <monitorPort>10025</monitorPort>
+            <serverName>subethasmtp</serverName>
+            <portOffset>15000</portOffset>
+          </configuration>
+          <executions>
+            <execution>
+              <id>start-email</id>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>stop-email</id>
+              <goals>
+                <goal>stop</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>com.btmatthews.maven.plugins</groupId>
+        <artifactId>emailserver-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
