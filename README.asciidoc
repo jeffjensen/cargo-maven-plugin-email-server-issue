@@ -5,9 +5,8 @@ The problem is at WAR deploy, something is connecting to the email server, encou
 
 The error occurs no matter what the port number is.
 
-However, when removing the two email properties used with Spring Boot, the problem goes away:
-  spring.mail.host=localhost
+However, when removing the port email property used with Spring Boot, the problem goes away:
   spring.mail.port=15025
-(of course, that makes the app use the production-configured values so not a solution!)
+(of course, that makes the app use the production-configured values which doesn't work for all situations)
 
 To reproduce, run "mvn install" in empty-war dir and then in acceptance-test dir.
